@@ -41,7 +41,7 @@ func init() {
 	// Configuration setup
 	viper.SetConfigName("config") // name of config file (without extension)
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("$HOME/.config/github.com/The-EpaG/trash-cli")
+	viper.AddConfigPath("$HOME/.config/trash-cli")
 	viper.SetDefault("trash_files_dir", "files")
 	viper.SetDefault("trash_info_dir", "info")
 	//trash home

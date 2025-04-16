@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 
-	"github.com/The-EpaG/trash-cli/internal"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -16,7 +16,7 @@ var PurgeCmd = &cobra.Command{
 	Long:  `Empty all files from the trash.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		trashHomeDir := viper.GetString("trash_home_dir")
-		if err := internal.PurgeTrash(trashHomeDir, trashHomeDir); err != nil {
+		if err := emptyTrash(trashHomeDir, trashHomeDir); err != nil {
 			log.Fatalf("Error purging trash: %v", err)
 		}
 		fmt.Println("Trash purged successfully")
@@ -24,4 +24,12 @@ var PurgeCmd = &cobra.Command{
 }
 
 func init() {
+}
+
+// emptyTrash empties the trash directories.
+func emptyTrash(filesDir, infoDir string) error {
+	if err := os.RemoveAll(filesDir); err != nil {
+		return fmt.Errorf("cannot empty trash files: %w", err)
+	}
+	return os.RemoveAll(infoDir)
 }
