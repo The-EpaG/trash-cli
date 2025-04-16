@@ -15,11 +15,10 @@ var PurgeCmd = &cobra.Command{
 	Short: "Empty the trash",
 	Long:  `Empty all files from the trash.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		trashHomeDir := viper.GetString("trash_home_dir")
+		trashHomeDir := viper.GetString("trash.homeDir")
 		if err := emptyTrash(trashHomeDir, trashHomeDir); err != nil {
 			log.Fatalf("Error purging trash: %v", err)
 		}
-		fmt.Println("Trash purged successfully")
 	},
 }
 

@@ -28,16 +28,16 @@ func GetHomeTrashPaths() (trashFilesDir string, trashInfoDir string, err error) 
 	}
 
 	trashHomeDir := filepath.Join(usr.HomeDir, LocalShareDirName, TrashDirName)
-	trashFilesDir = filepath.Join(trashHomeDir, viper.GetString("trash_files_dir"))
-	trashInfoDir = filepath.Join(trashHomeDir, viper.GetString("trash_info_dir"))
-	return
+	trashFilesDir = filepath.Join(trashHomeDir, viper.GetString("trash.filesDir"))
+	trashInfoDir = filepath.Join(trashHomeDir, viper.GetString("trash.infoDir"))
+	return trashFilesDir, trashInfoDir, nil
 }
 
 // GetTopTrashPaths determines the base trash directory and its subdirectories for a given top directory.
 func GetTopTrashPaths(topDirectory string) (filesDirectory string, infoDirectory string, err error) {
 	trashDirectory := filepath.Join(topDirectory, TrashDirName)
-	filesDirectory = filepath.Join(trashDirectory, viper.GetString("trash_files_dir"))
-	infoDirectory = filepath.Join(trashDirectory, viper.GetString("trash_info_dir"))
+	filesDirectory = filepath.Join(trashDirectory, viper.GetString("trash.filesDir"))
+	infoDirectory = filepath.Join(trashDirectory, viper.GetString("trash.infoDir"))
 	return
 }
 
