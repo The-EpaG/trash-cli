@@ -42,23 +42,22 @@ func init() {
 }
 
 // restoreFromTrash restores a file from the trash.
-func restoreFromTrash(trashFilesDir, trashInfoDir string, fileNameInTrash string) error {
-	infoFileName := fileNameInTrash + internal.TrashInfoExt
-	infoFilePath := filepath.Join(trashInfoDir, infoFileName)
-	trashFilePath := filepath.Join(trashFilesDir, fileNameInTrash)
+func restoreFromTrash(trashDir, infoDir, filename string) error {
+	infoFilepath := filepath.Join(infoDir, filename+internal.TrashInfoExt)
+	trashFilepath := filepath.Join(trashDir, filename)
 
-	trashInfo, err := internal.ParseTrashInfo(infoFilePath)
+	trashInfo, err := internal.ParseTrashInfo(infoFilepath)
 	if err != nil {
 		return fmt.Errorf("cannot parse .trashinfo file: %w", err)
 	}
 
 	// Move the file back to its original location
-	if err := os.Rename(trashFilePath, trashInfo.Path); err != nil {
+	if err := os.Rename(trashFilepath, trashInfo.Path); err != nil {
 		return fmt.Errorf("cannot move file back to original location: %w", err)
 	}
 
 	// Remove the .trashinfo file
-	if err := os.Remove(infoFilePath); err != nil {
+	if err := os.Remove(infoFilepath); err != nil {
 		return fmt.Errorf("cannot remove .trashinfo file: %w", err)
 	}
 

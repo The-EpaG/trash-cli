@@ -12,10 +12,10 @@ import (
 
 // listCmd represents the list command
 var ListCmd = &cobra.Command{
-	Use:   "list",
+	Use:     "list",
 	Aliases: []string{"ls"},
-	Short: "List files in the trash",
-	Long:  `List all files currently in the trash.`,
+	Short:   "List files in the trash",
+	Long:    `List all files currently in the trash.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		trashFilesDir, trashInfoDir, err := internal.GetHomeTrashPaths()
 		if err != nil {
@@ -41,27 +41,28 @@ func init() {
 
 // listTrash lists the files in the trash.
 func listTrash(trashFilesDir, trashInfoDir string, showDetails bool) error {
-	files, err := os.ReadDir(trashInfoDir)
+	entries, err := os.ReadDir(trashInfoDir)
 	if err != nil {
 		if os.IsNotExist(err) {
 			fmt.Println("The trash is empty.")
 			return nil
 		}
-		return fmt.Errorf("cannot read trash info directory '%s': %w", trashInfoDir, err)
+
+		return fmt.Errorf("cannot read trash info directory %q: %w", trashInfoDir, err)
 	}
 
-	if len(files) == 0 {
+	if len(entries) == 0 {
 		fmt.Println("The trash is empty.")
 		return nil
 	}
 
-	for _, file := range files {
-		infoFilePath := filepath.Join(trashInfoDir, file.Name())
+	for _, entry := range entries {
+		infoFilePath := filepath.Join(trashInfoDir, entry.Name())
 
 		trashInfo, err := internal.ParseTrashInfo(infoFilePath)
 		if err != nil {
-			log.Printf("Error parsing .trashinfo file for '%s': %v", file.Name(), err)
-			continue // Skip to the next file
+			// Skip to the next file
+			continue
 		}
 
 		if showDetails {
@@ -71,7 +72,7 @@ func listTrash(trashFilesDir, trashInfoDir string, showDetails bool) error {
 		} else {
 			fmt.Printf("%s -> %s\n", filepath.Base(trashInfo.Path), trashInfo.TrashFile)
 		}
-
 	}
+
 	return nil
 }

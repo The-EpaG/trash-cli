@@ -14,11 +14,11 @@ import (
 
 // trashCmd represents the trash command
 var TrashCmd = &cobra.Command{
-	Use:   "trash [file...]",
+	Use:     "trash [file...]",
 	Aliases: []string{"rm", "remove", "delete", "del"},
-	Short: "Trash a file or directory",
-	Long:  `Move specified files or directories to the trash.`,
-	Args:  cobra.MinimumNArgs(1),
+	Short:   "Trash a file or directory",
+	Long:    `Move specified files or directories to the trash.`,
+	Args:    cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		operationSuccessful := true
 		for _, file := range args {
@@ -39,37 +39,35 @@ var TrashCmd = &cobra.Command{
 }
 
 // moveToTrash moves a file or directory to the trash directory and creates the corresponding .trashinfo file.
-func moveToTrash(srcPath, trashFilesDir, trashInfoDir string) error {
-	// Get the original absolute path before moving the file.
-	originalAbsPath, err := filepath.Abs(srcPath)
+func moveToTrash(sourcePath, trashFilesDir, trashInfoDir string) error {
+	// Get the absolute path of the source file.
+	absolutePath, err := filepath.Abs(sourcePath)
 	if err != nil {
-		return fmt.Errorf("cannot get absolute path for %s: %w", srcPath, err)
+		return fmt.Errorf("cannot get absolute path for %s: %w", sourcePath, err)
 	}
 
-	// Check if the source file exists and is accessible.
-	_, err = os.Stat(srcPath)
-	if err != nil {
+	// Verify that the source file exists and is accessible.
+	if _, err = os.Stat(sourcePath); err != nil {
 		if os.IsNotExist(err) {
-			return fmt.Errorf("file %s does not exist", srcPath)
+			return fmt.Errorf("file %s does not exist", sourcePath)
 		}
-
-		return fmt.Errorf("error checking file %s: %w", srcPath, err)
+		return fmt.Errorf("error accessing file %s: %w", sourcePath, err)
 	}
 
-	// Generate a unique ID for the file in the trash
-	uniqueID := uuid.New().String()
+	// Generate a unique identifier for the trashed file.
+	uniqueIdentifier := uuid.New().String()
 
-	// Construct the final destination path using the unique ID
-	destPath := filepath.Join(trashFilesDir, uniqueID)
+	// Construct the destination path in the trash using the unique identifier.
+	destinationPath := filepath.Join(trashFilesDir, uniqueIdentifier)
 
-	// Create the .trashinfo file before moving the file
-	if err = createTrashInfo(originalAbsPath, trashInfoDir, uniqueID); err != nil {
-		return fmt.Errorf("cannot create .trashinfo file for %s: %w", srcPath, err)
+	// Create the .trashinfo file for the source file.
+	if err = createTrashInfo(absolutePath, trashInfoDir, uniqueIdentifier); err != nil {
+		return fmt.Errorf("cannot create .trashinfo file for %s: %w", sourcePath, err)
 	}
 
-	// Move the file/directory to the trash.
-	if err = os.Rename(srcPath, destPath); err != nil {
-		return fmt.Errorf("cannot move %s to trash: %w", srcPath, err)
+	// Move the source file or directory to the trash.
+	if err = os.Rename(sourcePath, destinationPath); err != nil {
+		return fmt.Errorf("cannot move %s to trash: %w", sourcePath, err)
 	}
 
 	return nil
@@ -77,8 +75,11 @@ func moveToTrash(srcPath, trashFilesDir, trashInfoDir string) error {
 
 // createTrashInfo creates a .trashinfo file with metadata about a trashed file, as per the Trash Specification.
 func createTrashInfo(originalPath, infoDir, fileName string) error {
-	infoFileTempPath := filepath.Join(infoDir, fileName+internal.TrashInfoExt+".tmp")
-	infoFilePath := filepath.Join(infoDir, fileName+internal.TrashInfoExt)
+	const trashInfoExt = ".trashinfo"
+	const trashInfoSection = "[Trash Info]"
+
+	infoFileTempPath := filepath.Join(infoDir, fileName+trashInfoExt+".tmp")
+	infoFilePath := filepath.Join(infoDir, fileName+trashInfoExt)
 
 	defer os.Remove(infoFileTempPath) // Ensure temporary file is cleaned up
 
@@ -88,11 +89,9 @@ func createTrashInfo(originalPath, infoDir, fileName string) error {
 	}
 	defer infoFile.Close()
 
-	// Get the current date and time in ISO 8601 format, as required by the specification.
 	deletionDate := time.Now().Format(time.RFC3339)
 
-	// Prepare the content of the .trashinfo file.
-	infoContent := fmt.Sprintf("%s\nPath=%s\nDeletionDate=%s\n", internal.TrashInfoSection, originalPath, deletionDate)
+	infoContent := fmt.Sprintf("%s\nPath=%s\nDeletionDate=%s\n", trashInfoSection, originalPath, deletionDate)
 
 	_, err = infoFile.WriteString(infoContent)
 	if err != nil {
