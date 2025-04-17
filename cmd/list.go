@@ -17,10 +17,10 @@ var ListCmd = &cobra.Command{
 	Short:   "List files in the trash",
 	Long:    `List all files currently in the trash.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		trashFilesDir, trashInfoDir, err := internal.GetHomeTrashPaths()
+		_, trashInfoDir, err := internal.GetHomeTrashPaths()
 		if err != nil {
 			log.Fatalf("Critical error: %v", err)
-		} else if trashFilesDir == "" || trashInfoDir == "" {
+		} else if trashInfoDir == "" {
 			log.Fatalf("Critical error: %v", err)
 		}
 		showDetails, err := cmd.Flags().GetBool("details")
@@ -28,7 +28,7 @@ var ListCmd = &cobra.Command{
 			log.Fatalf("cannot get details flag: %v", err)
 		}
 
-		err = listTrash(trashFilesDir, trashInfoDir, showDetails)
+		err = listTrash(trashInfoDir, showDetails)
 		if err != nil {
 			log.Fatalf("Error listing trash: %v", err)
 		}
@@ -36,15 +36,14 @@ var ListCmd = &cobra.Command{
 }
 
 func init() {
-	ListCmd.Flags().BoolP("details", "l", false, "Show details of the trashed files")
+	ListCmd.Flags().BoolP("details", "l", false, "long listing format")
 }
 
 // listTrash lists the files in the trash.
-func listTrash(trashFilesDir, trashInfoDir string, showDetails bool) error {
+func listTrash(trashInfoDir string, showDetails bool) error {
 	entries, err := os.ReadDir(trashInfoDir)
 	if err != nil {
 		if os.IsNotExist(err) {
-			fmt.Println("The trash is empty.")
 			return nil
 		}
 
@@ -52,7 +51,6 @@ func listTrash(trashFilesDir, trashInfoDir string, showDetails bool) error {
 	}
 
 	if len(entries) == 0 {
-		fmt.Println("The trash is empty.")
 		return nil
 	}
 

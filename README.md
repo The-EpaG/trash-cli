@@ -1,6 +1,6 @@
 # Trash CLI
 
-**Trash CLI** is a command-line utility for managing files and directories in the trash, compliant with the  [XDg Trash specification](http://standards.freedesktop.org/trash-spec/trashspec-latest.html).
+**Trash CLI** is a command-line utility for managing files and directories in the trash, compliant with the  [XDg Trash specification 1.0](https://specifications.freedesktop.org/trash-spec/1.0/).
 
 ## Features
 
