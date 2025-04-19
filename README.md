@@ -1,6 +1,6 @@
-# Trash CLI
+# Trash
 
-**Trash CLI** is a command-line utility for managing files and directories in the trash, compliant with the  [XDg Trash specification 1.0](https://specifications.freedesktop.org/trash-spec/1.0/).
+**Trash** is a command-line utility for managing files and directories in the trash, compliant with the  [XDg Trash specification 1.0](https://specifications.freedesktop.org/trash-spec/1.0/).
 
 ## Features
 
@@ -19,58 +19,58 @@
 1. Clone the repository:
    ```bash
    git clone https://github.com/The-EpaG/trash-cli.git
-   cd trash-cli
+   cd trash
    ```
 2. Build the project:
     ```shell
-    go build -o trash-cli
+    make build
     ```
 3. (Optional) Install the binary:
     ```shell
-    sudo mv trash-cli /usr/local/bin/
+    sudo mv trash /usr/bin/
     ```
 
 ## Usage
 Main Commands
 
-- **Trash files or directories:**
+- **Remove files or directories:**
     ```shell
-    trash-cli trash [file...]
+    trash rm [file...]
     ```
-    Aliases: `rm`, `remove`, `delete`, `del`.
+    Aliases: `rm`, `delete`, `del`.
 
 - **Restore a file:**
     ```shell
-    trash-cli restore [file]
+    trash restore [file]
     ```
 
 - **List files in the trash:**
     ```shell
-    trash-cli list
+    trash list
     ```
     Option: `-l` o `--details` to show additional details.
 
 - **Empty the trash:**
     ```shell
-    trash-cli purge
+    trash purge
     ```
 
 ### Examples
 - **Move a file to the trash:**
     ```shell
-    trash-cli trash example.txt
+    trash trash example.txt
     ```
 - **Restore a file from the trash:**
     ```shell
-    trash-cli restore example.txt
+    trash restore example.txt
     ```
 - **List files in the trash with details:**
     ```shell
-    trash-cli list --details
+    trash list --details
     ```
 - **Empty the trash:**
     ```shell
-    trash-cli purge
+    trash purge
     ```
 
 ## Project Structure
@@ -97,5 +97,5 @@ See the `LICENSE` file for licensing details.
 - **The-EpaG** - CLI Implementation.
 
 ## Contact
-- For questions or bug reports, open an issue on [GitHub](https://github.com/The-EpaG/trash-cli/issues).
+- For questions or bug reports, open an issue on [GitHub](https://github.com/The-EpaG/trash/issues).
 

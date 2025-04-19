@@ -22,13 +22,15 @@ const (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "trash-cli",
+	Use:   "trash",
 	Short: "A command-line utility for managing the trash",
-	Long:  `trash-cli is a command-line utility that allows you to manage files and directories in the trash, based on the XDG Trash specification.`,
+	Long:  `trash is a command-line utility that allows you to manage files and directories in the trash, based on the XDG Trash specification.`,
 }
 
 // init executes at application start
 func init() {
+	log.SetFlags(0)
+
 	// Load configuration
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
@@ -53,7 +55,7 @@ func init() {
 
 	// Register Cobra commands
 	rootCmd.AddCommand(cmd.ListCmd)
-	rootCmd.AddCommand(cmd.TrashCmd)
+	rootCmd.AddCommand(cmd.RemoveCmd)
 	rootCmd.AddCommand(cmd.RestoreCmd)
 	rootCmd.AddCommand(cmd.PurgeCmd)
 }
@@ -64,7 +66,7 @@ func main() {
 	}
 
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatalf("Critical error: %v", err)
+		// log.Fatalf("Critical error: %v", err)
 	}
 }
 

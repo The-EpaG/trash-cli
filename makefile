@@ -9,7 +9,7 @@ else
 endif
 
 BUILD_DIR			= .
-BINARY_NAME		= trash-cli
+BINARY_NAME		= trash
 BUILD_FILE 		= $(BUILD_DIR)/$(BINARY_NAME)$(EXE)
 ENTRY_FILE		= main.go
 BIN						= bin

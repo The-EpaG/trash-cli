@@ -25,9 +25,9 @@ var RestoreCmd = &cobra.Command{
 
 		if _, err := os.Stat(filepath.Join(tempTrashFilesDir, fileName)); err != nil {
 			if os.IsNotExist(err) {
-				log.Printf("Error: file '%s' does not exist in trash", fileName)
+				log.Printf("Error: '%s' does not exist in trash", fileName)
 			} else {
-				log.Printf("Error: cannot check if file '%s' exists in trash", fileName)
+				log.Printf("Error: cannot check if '%s' exists in trash", fileName)
 			}
 			os.Exit(1)
 		}

@@ -64,11 +64,11 @@ func listTrash(trashInfoDir string, showDetails bool) error {
 		}
 
 		if showDetails {
-			fmt.Printf("%s -> %s\n", filepath.Base(trashInfo.Path), trashInfo.TrashFile)
-			fmt.Printf("    Path: %s\n", trashInfo.Path)
-			fmt.Printf("    Deletion Date: %s\n", trashInfo.DeletionDate)
+			log.Printf("%s -> %s\n", filepath.Base(trashInfo.Path), trashInfo.TrashFile)
+			log.Printf("    Path: %s\n", trashInfo.Path)
+			log.Printf("    Deletion Date: %s\n", trashInfo.DeletionDate)
 		} else {
-			fmt.Printf("%s -> %s\n", filepath.Base(trashInfo.Path), trashInfo.TrashFile)
+			log.Printf("%s -> %s\n", filepath.Base(trashInfo.Path), trashInfo.TrashFile)
 		}
 	}
 
