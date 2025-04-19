@@ -1,6 +1,6 @@
 # Trash
 
-**Trash** is a command-line utility for managing files and directories in the trash, compliant with the  [XDg Trash specification 1.0](https://specifications.freedesktop.org/trash-spec/1.0/).
+**Trash** is a command-line utility for managing files and directories in the trash, compliant with the [XDg Trash specification 1.0](https://specifications.freedesktop.org/trash-spec/1.0/).
 
 ## Features
 
@@ -58,7 +58,7 @@ Main Commands
 ### Examples
 - **Move a file to the trash:**
     ```shell
-    trash trash example.txt
+    trash rm example.txt
     ```
 - **Restore a file from the trash:**
     ```shell
@@ -75,12 +75,12 @@ Main Commands
 
 ## Project Structure
 - `main.go`: Main entry point of the application.
-- `cmd`: Contains the main commands (`trash`, `restore`, `list`, `purge`).
+- `cmd`: Contains the main commands (`remove`, `restore`, `list`, `purge`).
 - `internal`: Contains the internal logic for managing the trash.
 - `directive.rst`: XDG Trash specification for reference.
 
 ## Compliance with the XDG Trash Specification
-This project implements the XDG Trash specification v1.0. For more details, see the `directive.rst` file.
+This project implements the XDG Trash specification v1.0. For more details, see the [XDg Trash specification 1.0](https://specifications.freedesktop.org/trash-spec/1.0/).
 
 ## Contributing
 1. Fork the repository.
@@ -98,4 +98,3 @@ See the `LICENSE` file for licensing details.
 
 ## Contact
 - For questions or bug reports, open an issue on [GitHub](https://github.com/The-EpaG/trash/issues).
-
